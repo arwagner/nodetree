@@ -40,7 +40,6 @@ def depth(node)
 end
 
 def root(node)
-  return nil if node.nil?
   return node if node.node.nil?
   return root(node.node)
 end

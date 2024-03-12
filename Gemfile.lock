@@ -18,6 +18,7 @@ GEM
     bson (4.15.0)
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
+    diff-lcs (1.5.1)
     drb (2.2.1)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
@@ -42,6 +43,19 @@ GEM
     rackup (2.1.0)
       rack (>= 3)
       webrick (~> 1.8)
+    rspec (3.13.0)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.0)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.1)
     ruby2_keywords (0.0.5)
     sinatra (4.0.0)
       mustermann (~> 3.0)
@@ -66,6 +80,7 @@ PLATFORMS
 DEPENDENCIES
   mongoid
   rackup
+  rspec
   sinatra
   sinatra-contrib
 
