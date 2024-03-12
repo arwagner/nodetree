@@ -7,6 +7,7 @@ Mongoid.load! "mongoid.config"
 class Node
   include Mongoid::Document
 
+  #TODO: figure out how to get sinatra to let me rename this association to :parent
   belongs_to :node, optional: true
 end
 
