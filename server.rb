@@ -21,17 +21,19 @@ get '/common_ancestor' do
   "root_id: #{root(lca).id}, lowest_common_ancestor: #{lca.id}, depth: #{depth(lca)}"
 end
 
-def lowest_common_ancestor(a, b)
-  return nil if a.nil? || b.nil?
-
-  return a if a.id === b.id
-
-  depth_of_a = depth(a)
-  depth_of_b = depth(b)
-  return lowest_common_ancestor(a, nth_ancestor(b, depth_of_b - depth_of_a)) if depth_of_b > depth_of_a
-  return lowest_common_ancestor(nth_ancestor(a, depth_of_a - depth_of_b), b) if depth_of_a > depth_of_b
-
-  return lowest_common_ancestor(a.node, b.node)
+def lowest_common_ancestor(*nodes)
+  return nil if nodes.any? {|node| node.nil? }
+  
+  return nodes[0] if nodes.all? {|node| node.id === nodes[0].id }
+  
+  depths = nodes.map {|node| depth(node) }
+  if (depths.all? {|current_depth| current_depth === depths[0] })
+    return lowest_common_ancestor(*nodes.map {|node| node.node })
+  end
+  
+  minimum_depth = depths.min
+  nodes = nodes.map.with_index {|node, index| nth_ancestor(node, depths[index] - minimum_depth)}
+  return lowest_common_ancestor(*nodes)
 end
 
 def depth(node)
