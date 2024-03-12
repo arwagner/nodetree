@@ -9,6 +9,13 @@ class Node
 
   #TODO: figure out how to get sinatra to let me rename this association to :parent
   belongs_to :node, optional: true
+  has_many :bird
+end
+
+class Bird
+  include Mongoid::Document
+
+  belongs_to :node
 end
 
 get '/common_ancestor' do

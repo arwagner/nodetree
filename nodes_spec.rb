@@ -3,7 +3,7 @@ require 'rspec'
 require './loaddata'
 
 describe "server" do
-  before(:all) { load_data('./nodes2.csv') }
+  before(:all) { load_rows('./nodes2.csv', Node) }
 
   describe "#depth" do
     subject { depth(Node.find(node_id)) }
