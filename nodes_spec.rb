@@ -98,4 +98,44 @@ describe "server" do
       end
     end
   end
+
+  describe "#nth_ancestor" do
+    subject { nth_ancestor(Node.find(node_id), n) }
+
+    context "0th ancestor of root" do
+      let(:node_id) { 130 }
+      let(:n) { 0 }
+
+      it "is the root node" do
+        expect(subject.id).to eq(130)
+      end
+    end
+
+    context "1st ancestor of root" do
+      let(:node_id) { 130 }
+      let(:n) { 1 }
+
+      it "is nil" do
+        expect(subject).to be_nil
+      end
+    end
+
+    context "1st ancestor of child of root" do
+      let(:node_id) { 125 }
+      let(:n) { 1 }
+
+      it "is the root" do
+        expect(subject.id).to eq(130)
+      end
+    end
+
+    context "2nd ancestor of child of root" do
+      let(:node_id) { 125 }
+      let(:n) { 2 }
+
+      it "is nil" do
+        expect(subject).to be_nil
+      end
+    end
+  end
 end

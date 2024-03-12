@@ -28,8 +28,8 @@ def lowest_common_ancestor(a, b)
 
   depth_of_a = depth(a)
   depth_of_b = depth(b)
-  return lowest_common_ancestor(a, b.node) if depth_of_b > depth_of_a
-  return lowest_common_ancestor(a.node, b) if depth_of_a > depth_of_b
+  return lowest_common_ancestor(a, nth_ancestor(b, depth_of_b - depth_of_a)) if depth_of_b > depth_of_a
+  return lowest_common_ancestor(nth_ancestor(a, depth_of_a - depth_of_b), b) if depth_of_a > depth_of_b
 
   return lowest_common_ancestor(a.node, b.node)
 end
@@ -42,4 +42,10 @@ end
 def root(node)
   return node if node.node.nil?
   return root(node.node)
+end
+
+def nth_ancestor(node, n)
+  return nil if node.nil?
+  return node if n == 0
+  nth_ancestor(node.node, n-1)
 end
