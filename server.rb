@@ -38,7 +38,11 @@ end
 
 def depth(node)
   return 1 if node.node_id.nil?
-  return 1 + depth(node.node)
+  return memoized[node.id] if memoized.has_key?(node.id)
+
+  answer = 1 + depth(node.node)
+  memoized[node.id] = answer
+  answer
 end
 
 def root(node)
@@ -50,4 +54,8 @@ def nth_ancestor(node, n)
   return nil if node.nil?
   return node if n == 0
   nth_ancestor(node.node, n-1)
+end
+
+def memoized
+  @memoized ||= {}
 end
