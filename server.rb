@@ -9,7 +9,7 @@ class Node
 
   #TODO: figure out how to get sinatra to let me rename this association to :parent
   belongs_to :node, optional: true
-  has_many :bird
+  has_many :birds
 end
 
 class Bird
@@ -27,6 +27,26 @@ get '/common_ancestor' do
 
   lca = lowest_common_ancestor(a, b)
   "root_id: #{root(lca).id}, lowest_common_ancestor: #{lca.id}, depth: #{depth(lca)}"
+end
+
+get '/flock' do
+  node_ids = params['node_ids']
+  flock(node_ids).join(", ")
+end
+
+def flock(node_ids)
+  @nodes_seen = {}
+  nodes = node_ids.map {|node_id| Node.find(node_id) rescue nil }.compact
+  birds = nodes.inject([]) {|accum, node| accum + birds_under(node) }
+  birds.map {|bird| bird.id }.sort.uniq
+end
+
+def birds_under(node)
+  return [] if @nodes_seen.has_key?(node.id)
+  @nodes_seen[node.id] = true
+
+  children = Node.where(node_id: node.id)
+  children.inject(node.birds) {|accum, child| accum + birds_under(child) }
 end
 
 def lowest_common_ancestor(*nodes)

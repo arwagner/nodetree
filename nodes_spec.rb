@@ -3,7 +3,10 @@ require 'rspec'
 require './loaddata'
 
 describe "server" do
-  before(:all) { load_rows('./nodes2.csv', Node) }
+  before(:all) do
+    load_rows('./nodes2.csv', Node)
+    load_rows('./birds2.csv', Bird)
+  end
 
   describe "#depth" do
     subject { depth(Node.find(node_id)) }
@@ -135,6 +138,58 @@ describe "server" do
 
       it "is nil" do
         expect(subject).to be_nil
+      end
+    end
+  end
+
+  describe "#flock" do
+    subject { flock(node_ids).sort }
+
+    context "root node" do
+      let(:node_ids) { [130] }
+
+      it "returns all the birds in the tree" do
+        expect(subject).to eq([1,2,3,4])
+      end
+    end
+
+    context "root node with another node that doesn't have any birds" do
+      let(:node_ids) { [130, 52] }
+
+      it "returns the same as just the root node" do
+        expect(subject).to eq([1,2,3,4])
+      end
+    end
+
+    context "root node with another node in a separate tree" do
+      let(:node_ids) { [130, 9] }
+
+      it "returns the birds from that tree" do
+        expect(subject).to eq([1,2,3,4,5])
+      end
+    end
+
+    context "root node with node that doesn't exist" do
+      let(:node_ids) { [130, 9999] }
+
+      it "returns the birds from root's tree" do
+        expect(subject).to eq([1,2,3,4])
+      end
+    end
+
+    context "overlapping trees" do
+      let(:node_ids) { [125, 5497637] }
+
+      it "returns one of each bird" do
+        expect(subject).to eq([1,2,3,4])
+      end
+    end
+
+    context "separate trees" do
+      let(:node_ids) { [2820230, 5497637] }
+
+      it "returns the birds from each tree" do
+        expect(subject).to eq([2,3,4])
       end
     end
   end
