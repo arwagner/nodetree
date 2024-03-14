@@ -30,8 +30,8 @@ get '/common_ancestor' do
 end
 
 get '/flock' do
-  node_ids = params['node_ids']
-  flock(node_ids).join(", ")
+  node_ids = params['node_ids'].split(',').map(&:to_i)
+  "birds: #{flock(node_ids)}"
 end
 
 def flock(node_ids)
