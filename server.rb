@@ -38,7 +38,7 @@ def flock(node_ids)
   @nodes_seen = {}
   nodes = node_ids.map {|node_id| Node.find(node_id) rescue nil }.compact
   birds = nodes.inject([]) {|accum, node| accum + birds_under(node) }
-  birds.map {|bird| bird.id }.sort.uniq
+  birds.map {|bird| bird.id }
 end
 
 def birds_under(node)
